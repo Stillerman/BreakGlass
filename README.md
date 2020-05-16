@@ -28,3 +28,5 @@ BreakGlass CLI is working in a very primitive way! Inquirer.js dependency used t
 ![New Role](./assets/newrole.png)
 
 Bobs new credentials (only will work if you are already signed into gcloud with admin privileges)
+
+**NOTE** This does not work if you select `roles/editor` because it is a primitive role. It will work if you select `roles/iam.securityReviewer`
