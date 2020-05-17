@@ -12,7 +12,7 @@ async function escalate() {
   const allProjects = await getProjects();
   const answers = await inquirer.prompt([
     {
-      message: "Which project would you like to escalate Bobs privileges?",
+      message: "Which project would you like to escalate Bobs on privileges?",
       type: "list",
       choices: allProjects.map((p) => p.id),
       name: "pid",
@@ -30,9 +30,9 @@ async function escalate() {
     },
   ]);
 
-  let selectedProject = toProject(answers.pid);
-  let selectedRole = answers.role;
-  let hours = answers.hours;
+  let selectedProject = toProject(answers["pid"]);
+  let selectedRole = answers["role"];
+  let hours = answers["hours"];
 
   await grantRole(
     "Bob@jasonstillerman.com",

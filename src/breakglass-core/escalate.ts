@@ -72,14 +72,22 @@ export async function grantRole(
   user: string,
   proj: Project,
   role: string,
-  hours: number
+  hours: number,
+  reasoning?: string
 ) {
   let currentPolicy = await getPolicy(proj);
-  currentPolicy.content["bindings"].push(getTempBinding(user, role, hours));
+  currentPolicy.content["bindings"].push(
+    getTempBinding(user, role, hours, reasoning)
+  );
   await updatePolicy(currentPolicy, proj);
 }
 
-function getTempBinding(user: string, role: string, hours: number) {
+function getTempBinding(
+  user: string,
+  role: string,
+  hours: number,
+  reasoning?: string
+) {
   let d = new Date();
   addHours(d, hours);
 
@@ -90,7 +98,7 @@ function getTempBinding(user: string, role: string, hours: number) {
     role: role,
     condition: {
       title: "Expires_In_" + hours.toString(),
-      description: `Expires in ${hours} hours`,
+      description: (reasoning + " - " || "") + `Expires in ${hours} hours`,
       expression: `request.time < timestamp('${dateStr}')`,
     },
   };
