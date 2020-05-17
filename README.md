@@ -22,7 +22,9 @@ BreakGlass CLI is working in a very primitive way! Inquirer.js dependency used t
 
 `yarn install`
 
-`node escalate.js`
+`yarn build`
+
+`node dist/index.js`
 
 ![CLI](./assets/breakglassCLI.png)
 ![New Role](./assets/newrole.png)

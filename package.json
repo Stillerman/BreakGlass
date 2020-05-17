@@ -1,5 +1,15 @@
 {
+  "scripts": {
+    "watch": "./node_modules/.bin/parcel watch src/breakglass-cli/index.ts -t node",
+    "build": "./node_modules/.bin/parcel build src/breakglass-cli/index.ts -t node"
+  },
   "dependencies": {
+    "@types/inquirer": "^6.5.0",
     "inquirer": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/parcel-bundler": "^1.12.1",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.2"
   }
 }
