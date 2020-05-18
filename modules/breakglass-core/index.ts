@@ -1,10 +1,9 @@
 import { exec } from "child_process";
-import inquirer from "inquirer";
 import fs from "fs";
 
 const FILENAME = "policy.json";
 
-async function cmd(command): Promise<string> {
+async function cmd(command: string): Promise<string> {
   return new Promise((acc, rej) => {
     exec(command, (err, stdout, stderr) => {
       if (err) return rej(err);

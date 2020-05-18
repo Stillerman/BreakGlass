@@ -1,11 +1,10 @@
 import {
   toProject,
   getProjects,
-  getPolicy,
-  updatePolicy,
   cleanEnv,
   grantRole,
-} from "../breakglass-core/escalate";
+} from "../breakglass-core";
+
 import inquirer from "inquirer";
 
 async function escalate() {

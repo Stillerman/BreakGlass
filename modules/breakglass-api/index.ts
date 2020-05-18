@@ -1,12 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import {
-  getProjects,
-  grantRole,
-  Project,
-  toProject,
-} from "../breakglass-core/escalate";
+import { getProjects, grantRole, Project, toProject } from "../breakglass-core";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -49,5 +44,11 @@ app.post("/grantRole", bodyParser.json(), async (req, res) => {
 
   return res.status(200).json(req.body);
 });
+
+declare var __dirname;
+
+app.use(express.static(__dirname + "/../../breakglass-ui/dist"));
+
+console.log("Running app on 8080");
 
 app.listen(8080);

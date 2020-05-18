@@ -16,15 +16,15 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
 6. Provide your reasoning for breaking the glass
 7. Your permissions will be provided and the event will be logged
 
-## Minimum Viable Product
+## UI
 
-BreakGlass CLI is working in a very primitive way! Inquirer.js dependency used to select project.
+`yarn docker`
 
-`yarn install`
+`docker run -p 8080:8080 -d breakglass`
 
-`yarn build`
+Then navigate to `http://localhost:8080` and you will see this UI.
 
-`node dist/index.js`
+## CLI
 
 ![CLI](./assets/breakglassCLI.png)
 ![New Role](./assets/newrole.png)
