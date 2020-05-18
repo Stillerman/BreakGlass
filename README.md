@@ -24,6 +24,8 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
 
 Then navigate to `http://localhost:8080` and you will see this UI.
 
+![UI](./assets/UI.png)
+
 ## CLI
 
 ![CLI](./assets/breakglassCLI.png)
