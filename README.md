@@ -16,21 +16,10 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
 6. Provide your reasoning for breaking the glass
 7. Your permissions will be provided and the event will be logged
 
-## UI
+# Getting Started (This needs some work)
 
-`yarn docker`
-
-`docker run -p 8080:8080 -d breakglass`
-
-Then navigate to `http://localhost:8080` and you will see this UI.
-
-![UI](./assets/UI.png)
-
-## CLI
-
-![CLI](./assets/breakglassCLI.png)
-![New Role](./assets/newrole.png)
-
-Bobs new credentials (only will work if you are already signed into gcloud with admin privileges)
-
-**NOTE** This does not work if you select `roles/editor` because it is a primitive role. It will work if you select `roles/iam.securityReviewer`
+1. Create a service account
+2. Give it the following permissions (Need to find out what permissions go here)
+3. Create .env (Is not effective yet)
+4. yarn k8s
+5. Done.

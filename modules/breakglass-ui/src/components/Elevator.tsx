@@ -28,7 +28,7 @@ export default ({ onGlassBroken }) => {
   async function fetchProjects() {
     setLoadingProjects(true);
     console.log("Fetching projects");
-    const response = await axios.get("http://localhost:8080/getProjects");
+    const response = await axios.get("/getProjects");
     const projects = response.data.map((p) => p.id);
     setProjects(projects);
     setLoadingProjects(false);

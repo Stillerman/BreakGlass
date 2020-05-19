@@ -8,7 +8,7 @@ import { useState } from "react";
 const App = () => {
   const [done, setDone] = useState(false);
   async function handleBreakGlass(params) {
-    const resp = await axios.post("http://localhost:8080/grantRole", params);
+    const resp = await axios.post("/grantRole", params);
     console.log("You broke the glass!", resp);
     setDone(true);
   }
