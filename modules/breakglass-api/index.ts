@@ -3,12 +3,26 @@ import cors from "cors";
 
 import { getProjects, grantRole, Project, toProject } from "../breakglass-core";
 import bodyParser from "body-parser";
+import jwtDecode from "jwt-decode";
 
 const app = express();
 
+export function validateUser(req, res, next) {
+  let decoded = jwtDecode(req.headers["x-access-token"]);
+
+  if (!decoded) {
+    res.status(401).send("You did not provide jwt");
+  } else if (decoded.exp * 1000 <= Date.now()) {
+    res.status(401).send("JWT is expired!");
+  } else {
+    req.user = decoded;
+    next();
+  }
+}
+
 app.use(cors());
 
-app.get("/getProjects", async (req, res) => {
+app.get("/getProjects", validateUser, async (req, res) => {
   let projects = await getProjects();
   return res.json(projects);
 });
@@ -31,8 +45,14 @@ function reqBodytoRoleRequest(body: Object): RoleRequest {
   };
 }
 
-app.post("/grantRole", bodyParser.json(), async (req, res) => {
+app.post("/grantRole", validateUser, bodyParser.json(), async (req, res) => {
   const roleReq = reqBodytoRoleRequest(req.body);
+
+  if (roleReq.user != req["user"].email) {
+    return res
+      .status(401)
+      .send("You do not have permissions to elevate this user");
+  }
 
   await grantRole(
     roleReq.user,

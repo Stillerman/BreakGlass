@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
-export default ({ onGlassBroken }) => {
+export default ({ onGlassBroken, token }) => {
   const [modalActive, setModalActive] = useState(false);
 
   const [user, setUser] = useState("");
@@ -28,7 +29,11 @@ export default ({ onGlassBroken }) => {
   async function fetchProjects() {
     setLoadingProjects(true);
     console.log("Fetching projects");
-    const response = await axios.get("/getProjects");
+    const response = await axios.get("/getProjects", {
+      headers: {
+        "x-access-token": token,
+      },
+    });
     const projects = response.data.map((p) => p.id);
     setProjects(projects);
     setLoadingProjects(false);
@@ -39,7 +44,6 @@ export default ({ onGlassBroken }) => {
   }
 
   function onCancel() {
-    setUser("");
     setProject("");
     setRole("");
     setHours(1);
@@ -58,8 +62,11 @@ export default ({ onGlassBroken }) => {
   }
 
   useEffect(() => {
+    const decoded = jwtDecode(token);
     fetchProjects();
     setRole(roles[0]);
+    setUser(decoded.email);
+    console.log(token);
   }, []);
 
   return (
@@ -70,6 +77,7 @@ export default ({ onGlassBroken }) => {
           <input
             className={isEmailValid() ? "input" : "input is-danger"}
             type="email"
+            disabled
             placeholder="Email input"
             value={user}
             onChange={(e) => setUser(e.target.value)}
