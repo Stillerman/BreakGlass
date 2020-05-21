@@ -15,21 +15,32 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+ARG OAuthClientId
+
+RUN echo ${OAuthClientId}
+
 # Build UI
-WORKDIR modules/breakglass-ui
+WORKDIR /usr/src/app/modules/breakglass-ui
+
+# Create Secrets.js in home directory
+RUN echo "{\"clientId\": \"$OAuthClientId\"}" > src/secrets.json
+
+RUN cat src/secrets.json
 
 RUN npm install
 RUN npm run build
 
 WORKDIR /usr/src/app
 
+ARG ServiceAccount
+ARG KeyFile
+
 # Log into CLI
-RUN gcloud auth activate-service-account breakglass@velvety-mason-277416.iam.gserviceaccount.com --key-file=key.json
+RUN gcloud auth activate-service-account $ServiceAccount --key-file=$KeyFile
 
 
 
-WORKDIR /usr/src/app
-WORKDIR modules/breakglass-api
+WORKDIR /usr/src/app/modules/breakglass-api
 
 RUN npm install
 RUN npm run build

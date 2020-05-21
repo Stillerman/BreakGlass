@@ -2,7 +2,7 @@
   "name": "breakglass",
   "version": "1.0.0",
   "scripts": {
-    "docker": "docker build . -t jstillerman/breakglass:v1",
+    "docker": "sh DockerBuild.sh",
     "k8s": "sh K8sLocal.sh"
   },
   "dependencies": {},
