@@ -106,8 +106,6 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
    yarn k8s
    ```
 
-   Note you will need to whlelist the ip that the project is running on before OAuth will work.
-
-   Add the ip address and port (ie `http://localhost:8080`) to the OAuth credentials allowed domains whitelist
+   **Note** you will need to whlelist the ip that the project is running on before OAuth will work. Add the ip address and port (ie `http://localhost:8080`) to the OAuth credentials allowed domains whitelist
 
 8. Done.

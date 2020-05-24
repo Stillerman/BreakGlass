@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: breakglass
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: breakglass
+  template:
+    metadata:
+      labels:
+        app: breakglass
+    spec:
+      containers:
+        - name: breakglass
+          image: jstillerman/breakglass:v5
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: brgl-service
+spec:
+  selector:
+    app: breakglass
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
