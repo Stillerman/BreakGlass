@@ -72,13 +72,14 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
    Grant sa-breakglass folder admin in all of the folders that you would like users to have the change to escalate in. Breakglass will only be able to see and update projects where it is the folder admin.
 
 5. Add OAuth to breakglass project
+
    Go [here](https://developers.google.com/identity/sign-in/web/sign-in#before_you_begin) and click "Configure a project"
 
-   Select BreakGlass and when it asks "Where are you calling from?" Select "Web Browser". Follow prompts until you get the OAuth Client Id. Copy that for use in the next step.
+   Select BreakGlass and when it asks "Where are you calling from?" Select "Web Browser". Follow prompts until you get the OAuth Client Id. That will be needed for later.
 
 6. Configure Breakglass
 
-   Rename `conf.yaml.example` to `conf.yaml` and configure it to your needs.
+   Rename `conf.yaml.example` to `conf.yaml` and configure it to your needs. Read about possible configurations [here](./CONFIGURE.md).
 
    In the root of the project create `.secrets` file.The file should be in the root folder (the one with `Dockerfile` in it) and should be in the following format
 
@@ -88,15 +89,11 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
    ```
 
 7. Build the project
+
    To run the project with docker, run
 
    ```
    yarn docker
-   ```
-
-   and then
-
-   ```
    docker run jstillerman/breakglass:v1 -p 8080:8080
    ```
 
@@ -108,7 +105,7 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
 
    Note you will need to whlelist the ip that the project is running on before OAuth will work.
 
-   Add the ip address and port ie `http://localhost:8080` to the OAuth credentials allowed domains whitelist
+   Add the ip address and port (ie `http://localhost:8080`) to the OAuth credentials allowed domains whitelist
 
 8. Done.
 
