@@ -1,13 +1,15 @@
 import * as React from "react";
 import { GoogleLogin } from "react-google-login";
-import secrets from "../secrets.json";
+
+// @ts-ignore
+import conf from "../conf.yaml";
 
 export default ({ onAuth }) => {
   return (
     <div>
       <h1>Login with Google</h1>
       <GoogleLogin
-        clientId={secrets.clientId}
+        clientId={conf.OAuthClientId}
         buttonText="Login"
         onSuccess={(results) => onAuth(results["tokenId"])}
         onFailure={console.log}

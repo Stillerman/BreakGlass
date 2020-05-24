@@ -3,7 +3,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-export default ({ onGlassBroken, token }) => {
+// @ts-ignore
+import conf from "../conf.yaml";
+
+export default ({ onError, onGlassBroken, token }) => {
   const [modalActive, setModalActive] = useState(false);
 
   const [user, setUser] = useState("");
@@ -12,11 +15,9 @@ export default ({ onGlassBroken, token }) => {
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [project, setProject] = useState("");
 
+  const [roles, setRoles] = useState([]);
+  const [loadingRoles, setLoadingRoles] = useState(false);
   const [role, setRole] = useState("");
-  const [roles, setRoles] = useState([
-    "roles/iam.securityReviewer",
-    "roles/editor",
-  ]);
 
   const [reasoning, setReasoning] = useState("");
 
@@ -29,14 +30,40 @@ export default ({ onGlassBroken, token }) => {
   async function fetchProjects() {
     setLoadingProjects(true);
     console.log("Fetching projects");
-    const response = await axios.get("/getProjects", {
-      headers: {
-        "x-access-token": token,
-      },
-    });
-    const projects = response.data.map((p) => p.id);
-    setProjects(projects);
-    setLoadingProjects(false);
+    try {
+      const response = await axios
+        .get("/getProjects", {
+          headers: {
+            "x-access-token": token,
+          },
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+
+      const projs = response.data.map((p) => p.id);
+      setProjects(projs);
+      setLoadingProjects(false);
+    } catch (err) {
+      onError(err.message);
+    }
+  }
+
+  async function fetchRoles() {
+    if (project.length > 0) {
+      setLoadingRoles(true);
+      const response = await axios
+        .get("/getRoles/" + project, {
+          headers: {
+            "x-access-token": token,
+          },
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+      setRoles(response.data);
+      setLoadingRoles(false);
+    }
   }
 
   function onSubmit() {
@@ -64,10 +91,14 @@ export default ({ onGlassBroken, token }) => {
   useEffect(() => {
     const decoded = jwtDecode(token);
     fetchProjects();
-    setRole(roles[0]);
+    setRole("");
     setUser(decoded.email);
     console.log(token);
   }, []);
+
+  useEffect(() => {
+    fetchRoles();
+  }, [project]);
 
   return (
     <div>
@@ -116,8 +147,12 @@ export default ({ onGlassBroken, token }) => {
       <div className="field">
         <div className="control">
           <label className="label">Role</label>
-          <div className="select">
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <div className={loadingRoles ? "select is-loading" : "select"}>
+            <select
+              value={role}
+              disabled={project.length > 0 ? false : true}
+              onChange={(e) => setRole(e.target.value)}
+            >
               <option>Select a role</option>
               {roles.map((r) => (
                 <option key={r}>{r}</option>

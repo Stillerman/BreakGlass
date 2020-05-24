@@ -50,26 +50,41 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
        --iam-account {The service account you created above}
    ```
 
-   If you want to confirm all is well, run the following
+   Enable the Cloud Resource Manager API [Here](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com)
+   **Note** be sure that this is for the project Breakglass!
+
+   Sign in by running the following
 
    ```
    gcloud auth activate-service-account {service account} --key-file=key.json
    ```
 
-4. Give it the following permissions (Need to find out what permissions go here)
+   Run
+
+   ```
+   gcloud projects list
+   ```
+
+   and make sure you can see the projects
+
+4. Grant Permissions
+
+   Grant sa-breakglass folder admin in all of the folders that you would like users to have the change to escalate in. Breakglass will only be able to see and update projects where it is the folder admin.
+
 5. Add OAuth to breakglass project
    Go [here](https://developers.google.com/identity/sign-in/web/sign-in#before_you_begin) and click "Configure a project"
 
    Select BreakGlass and when it asks "Where are you calling from?" Select "Web Browser". Follow prompts until you get the OAuth Client Id. Copy that for use in the next step.
 
-6. In the root of the project create `.secrets` file
+6. Configure Breakglass
 
-   The file should be in the root folder (the one with `Dockerfile` in it) and should be in the following format
+   Rename `conf.yaml.example` to `conf.yaml` and configure it to your needs.
+
+   In the root of the project create `.secrets` file.The file should be in the root folder (the one with `Dockerfile` in it) and should be in the following format
 
    ```
    ServiceAccount=breakglass-sa@XXX
    KeyFile=key.json
-   OAuthClientId=XXXXXX
    ```
 
 7. Build the project

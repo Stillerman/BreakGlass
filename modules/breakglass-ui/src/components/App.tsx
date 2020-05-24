@@ -6,48 +6,64 @@ import Done from "./Done";
 import Authorize from "./Authorize";
 import { useState } from "react";
 
+type AppState = "UnAuthed" | "Elevator" | "Loading" | "Error" | "Done";
+
 const App = () => {
-  const [authed, setAuthed] = useState(false);
+  const [appState, setAppState] = useState<AppState>("UnAuthed");
+  const [error, setError] = useState<string>("No Error!");
   const [token, setToken] = useState("");
-  const [done, setDone] = useState(false);
 
   async function handleBreakGlass(params) {
+    setAppState("Loading");
     const resp = await axios.post("/grantRole", params, {
       headers: {
         "x-access-token": token,
       },
     });
     console.log("You broke the glass!", resp);
-    setDone(true);
+    setAppState("Done");
   }
 
   function handleAuth(token: string) {
     setToken(token);
-    setAuthed(true);
+    setAppState("Elevator");
+  }
+
+  function handleError(err: string) {
+    setAppState("Error");
+    setError(err);
+  }
+
+  function getMainContent() {
+    switch (appState) {
+      case "UnAuthed":
+        return <Authorize onAuth={handleAuth}></Authorize>;
+      case "Elevator":
+        return (
+          <Elevator
+            token={token}
+            onError={handleError}
+            onGlassBroken={handleBreakGlass}
+          ></Elevator>
+        );
+      case "Done":
+        return <Done />;
+      case "Loading":
+        return <p>Loading...</p>;
+      case "Error":
+        return <p>Error: {error}</p>;
+    }
   }
 
   return (
     <div>
-      <Navbar></Navbar>
-
-      {/* <section className="hero is-primary">
-        <div className="hero-body">
-          <div className="container">
-            <h1 className="title">Elevate Your GCP Permissions</h1>
-            <h2 className="subtitle">Without waking the RP</h2>
-          </div>
-        </div>
-      </section> */}
+      <Navbar
+        appState={appState}
+        token={token}
+        logOut={() => setAppState("UnAuthed")}
+      ></Navbar>
       <section className="section">
-        <div className="container">
-          {!authed ? (
-            <Authorize onAuth={handleAuth}></Authorize>
-          ) : done ? (
-            <Done />
-          ) : (
-            <Elevator token={token} onGlassBroken={handleBreakGlass}></Elevator>
-          )}
-        </div>
+        <div className="container">{getMainContent()}</div>
       </section>
     </div>
   );

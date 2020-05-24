@@ -5,3 +5,4 @@ key.json
 .vscode
 .secrets
 secrets.json
+conf.yaml

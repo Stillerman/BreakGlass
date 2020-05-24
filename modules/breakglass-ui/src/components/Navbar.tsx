@@ -1,6 +1,9 @@
 import * as React from "react";
+import { GoogleLogout } from "react-google-login";
+// @ts-ignore
+import conf from "../conf.yaml";
 
-export default () => (
+export default ({ appState, token, logOut }) => (
   <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
       <a className="navbar-item" href="#">
@@ -24,9 +27,24 @@ export default () => (
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <a className="button is-primary">
-              <strong>Sign In</strong>
-            </a>
+            {appState != "UnAuthed" && (
+              <GoogleLogout
+                clientId={conf.OAuthClientId}
+                render={({ onClick }) => {
+                  return (
+                    <a
+                      className="button is-primary"
+                      onClick={() => {
+                        onClick();
+                        logOut();
+                      }}
+                    >
+                      <strong>Sign Out</strong>
+                    </a>
+                  );
+                }}
+              ></GoogleLogout>
+            )}
           </div>
         </div>
       </div>

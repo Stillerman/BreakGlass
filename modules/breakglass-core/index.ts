@@ -1,4 +1,6 @@
+//@ts-ignore
 import { exec } from "child_process";
+//@ts-ignore
 import fs from "fs";
 
 const FILENAME = "policy.json";

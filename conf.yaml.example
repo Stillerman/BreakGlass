@@ -1,0 +1,25 @@
+OAuthClientId: XXXX
+SendGridApiKey: blahblah
+
+# Settings inherited by all projects
+global:
+    whitelist:
+        - jason@jasonstillerman.com
+
+    permissions:
+        - roles/iam.securityReviewer
+        - roles/iam.securityAdmin
+    
+    notify:
+        chatrooms:
+            - https://breakglass.chatroom.webhook/asdf
+        emails:
+            - SecurityReviewer@jasonstillerman.com
+
+mongodb-277417:
+    whitelist:
+        - bob@jasonstillerman.com
+
+    notify:
+        chatrooms:
+            - https://specific.chatroom.for.this.proj/asdf
