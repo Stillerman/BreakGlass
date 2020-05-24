@@ -6,15 +6,18 @@ Temporary GCP Privilege Escalation Tool
 
 BreakGlass is a tool that allows developers to temporarily escalate their own GCP permissions at any time. This is like the sudo command for GCP permissions. Developers will be able to fix things at 3 AM without waking up the teams RP.
 
+![UI](./assets/UI.png)
+![UI2](./assets/UI2.png)
+![Bot](./assets/bot.png)
+
 ## How it works
 
 1. Sign into the app with your GCP credentials
-2. Select a client
-3. Select a project
-4. Select the permissions you need
-5. Select a timeframe
-6. Provide your reasoning for breaking the glass
-7. Your permissions will be provided and the event will be logged
+2. Select a project
+3. Select the permissions you need
+4. Select a timeframe
+5. Provide your reasoning for breaking the glass
+6. Your permissions will be provided and the event will be logged
 
 # Getting Started
 
@@ -108,5 +111,3 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
    Add the ip address and port (ie `http://localhost:8080`) to the OAuth credentials allowed domains whitelist
 
 8. Done.
-
-   ![UI](./assets/UI2.png)

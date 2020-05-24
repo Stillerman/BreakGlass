@@ -16,6 +16,26 @@ export async function notify(roleReq: RoleRequest) {
     sendWebhook(url, roleReq);
   });
 
+  if (conf.SendGridKey) {
+    sendEmails(roleReq);
+  }
+}
+
+async function sendWebhook(url: string, roleReq: RoleRequest) {
+  axios.post(
+    url,
+    {
+      text: getDescription(roleReq),
+    },
+    {
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    }
+  );
+}
+
+async function sendEmails(roleReq: RoleRequest) {
   let recipients = [];
 
   conf?.global?.notify?.emails?.forEach((email) => recipients.push(email));
@@ -37,18 +57,4 @@ export async function notify(roleReq: RoleRequest) {
     console.log("There was an error", e.message);
   }
   return;
-}
-
-async function sendWebhook(url: string, roleReq: RoleRequest) {
-  axios.post(
-    url,
-    {
-      text: getDescription(roleReq),
-    },
-    {
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    }
-  );
 }
