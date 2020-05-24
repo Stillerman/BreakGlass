@@ -1,8 +1,8 @@
 # BreakGlass
 
-Temporary GCP Privilege Escalation Tool
+### The [Highly Configurable](./CONFIGURE.md) Temporary GCP Privilege Escalation Tool
 
-## What is this?
+## What is BreakGlass?
 
 BreakGlass is a tool that allows developers to temporarily escalate their own GCP permissions at any time. This is like the sudo command for GCP permissions. Developers will be able to fix things at 3 AM without waking up the teams RP.
 
