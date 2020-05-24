@@ -17,3 +17,10 @@ export function reqBodytoRoleRequest(body: Object): RoleRequest {
     reasoning: body["reasoning"],
   };
 }
+
+export function getDescription(roleReq: RoleRequest): string {
+  return `${roleReq.user} just broke the glass on project ${roleReq.project.id}.
+Role: ${roleReq.role}
+Hours: ${roleReq.hours}
+Reasoning: "${roleReq.reasoning}"`;
+}

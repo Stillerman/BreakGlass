@@ -1,5 +1,6 @@
-import { RoleRequest } from "./roleReq";
+import { RoleRequest, getDescription } from "./roleReq";
 import sgMail from "@sendgrid/mail";
+import axios from "axios";
 
 //@ts-ignore
 import conf from "../conf.yaml";
@@ -7,22 +8,28 @@ import conf from "../conf.yaml";
 export async function notify(roleReq: RoleRequest) {
   console.log("NOTIFYING THE AUTHORITIES!", conf.SendGridKey);
 
+  conf?.global?.notify?.chatrooms?.forEach((url) => {
+    sendWebhook(url, roleReq);
+  });
+
+  conf[roleReq.project.id]?.notify?.chatrooms?.forEach((url) => {
+    sendWebhook(url, roleReq);
+  });
+
   let recipients = [];
 
-  if (conf?.global?.notify?.emails?.length > 0) {
-    recipients = [...recipients, ...conf.global.notify.emails];
-  }
+  conf?.global?.notify?.emails?.forEach((email) => recipients.push(email));
 
-  if (conf[roleReq.project.id]?.notify?.emails?.length > 0) {
-    recipients = [...recipients, ...conf[roleReq.project.id].notify.emails];
-  }
+  conf[roleReq.project.id]?.notify?.emails?.forEach((email) =>
+    recipients.push(email)
+  );
 
   sgMail.setApiKey(conf.SendGridKey);
   const msg = {
     from: "jason.t.stillerman@gmail.com",
     to: recipients,
     subject: roleReq.user + " Broke the Glass",
-    text: `${roleReq.user} just broke the glass on project ${roleReq.project.id}. They assumed the role ${roleReq.role} for ${roleReq.hours} hours. This was the reasoning they provided: "${roleReq.reasoning}"`,
+    text: getDescription(roleReq),
   };
   try {
     await sgMail.sendMultiple(msg);
@@ -30,4 +37,18 @@ export async function notify(roleReq: RoleRequest) {
     console.log("There was an error", e.message);
   }
   return;
+}
+
+async function sendWebhook(url: string, roleReq: RoleRequest) {
+  axios.post(
+    url,
+    {
+      text: getDescription(roleReq),
+    },
+    {
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    }
+  );
 }
