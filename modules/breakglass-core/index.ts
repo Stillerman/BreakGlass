@@ -105,6 +105,12 @@ function getTempBinding(
   };
 }
 
+export async function signIntoServiceAccount(account: string, keyFile: string) {
+  await cmd(
+    `gcloud auth activate-service-account ${account} --key-file=${keyFile}`
+  );
+}
+
 export async function cleanEnv() {
   await cmd("rm " + FILENAME);
 }
