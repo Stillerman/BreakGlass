@@ -3,9 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-// @ts-ignore
-import conf from "../conf.yaml";
-
 export default ({ onError, onGlassBroken, token }) => {
   const [modalActive, setModalActive] = useState(false);
 

@@ -1,26 +1,25 @@
-// @ts-ignore
-import conf from "../conf.yaml";
+import { getConf } from "./getConf";
 
 function lowerCaseNoDots(user: string): string {
   return user.toLowerCase().replace(/\./g, "");
 }
 
 export function canUserParticipate(user: string, project: string): boolean {
-  let globallyBlacklisted = (conf.global.blacklist || [])
+  let globallyBlacklisted = (getConf().global.blacklist || [])
     .map(lowerCaseNoDots)
     .includes(lowerCaseNoDots(user));
-  let globallyWhitelisted = (conf.global.whitelist || [])
+  let globallyWhitelisted = (getConf().global.whitelist || [])
     .map(lowerCaseNoDots)
     .includes(lowerCaseNoDots(user));
 
   let projectBlacklisted = false,
     projectWhitelisted = false;
   // If there is project-wide settings
-  if (conf[project]) {
-    projectBlacklisted = (conf[project].blacklist || [])
+  if (getConf()[project]) {
+    projectBlacklisted = (getConf()[project].blacklist || [])
       .map(lowerCaseNoDots)
       .includes(lowerCaseNoDots(user));
-    projectWhitelisted = (conf[project].whitelist || [])
+    projectWhitelisted = (getConf()[project].whitelist || [])
       .map(lowerCaseNoDots)
       .includes(lowerCaseNoDots(user));
   }

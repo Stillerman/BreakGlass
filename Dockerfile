@@ -15,26 +15,14 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-ARG OAuthClientId
-
-RUN echo ${OAuthClientId}
-
 # Build UI
 WORKDIR /usr/src/app/modules/breakglass-ui
 
-# Move conf.yaml to ui/src
-COPY conf.yaml ./src
 
 RUN npm install
 RUN npm run build
 
 WORKDIR /usr/src/app
-
-ARG ServiceAccount
-ARG KeyFile
-
-# Log into CLI
-RUN gcloud auth activate-service-account $ServiceAccount --key-file=$KeyFile
 
 WORKDIR /usr/src/app/modules/breakglass-api
 

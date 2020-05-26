@@ -15,7 +15,8 @@
     "parcel": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-google-login": "^5.1.20"
+    "react-google-login": "^5.1.20",
+    "yaml": "^1.10.0"
   },
   "devDependencies": {
     "typescript": "^3.9.2"

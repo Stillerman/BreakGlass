@@ -3,20 +3,20 @@ import sgMail from "@sendgrid/mail";
 import axios from "axios";
 
 //@ts-ignore
-import conf from "../conf.yaml";
+import { getConf } from "./getConf";
 
 export async function notify(roleReq: RoleRequest) {
-  console.log("NOTIFYING THE AUTHORITIES!", conf.SendGridKey);
+  console.log("NOTIFYING THE AUTHORITIES!", getConf().SendGridKey);
 
-  conf?.global?.notify?.chatrooms?.forEach((url) => {
+  getConf()?.global?.notify?.chatrooms?.forEach((url) => {
     sendWebhook(url, roleReq);
   });
 
-  conf[roleReq.project.id]?.notify?.chatrooms?.forEach((url) => {
+  getConf()[roleReq.project.id]?.notify?.chatrooms?.forEach((url) => {
     sendWebhook(url, roleReq);
   });
 
-  if (conf.SendGridKey) {
+  if (getConf().SendGridKey) {
     sendEmails(roleReq);
   }
 }
@@ -38,13 +38,13 @@ async function sendWebhook(url: string, roleReq: RoleRequest) {
 async function sendEmails(roleReq: RoleRequest) {
   let recipients = [];
 
-  conf?.global?.notify?.emails?.forEach((email) => recipients.push(email));
+  getConf()?.global?.notify?.emails?.forEach((email) => recipients.push(email));
 
-  conf[roleReq.project.id]?.notify?.emails?.forEach((email) =>
+  getConf()[roleReq.project.id]?.notify?.emails?.forEach((email) =>
     recipients.push(email)
   );
 
-  sgMail.setApiKey(conf.SendGridKey);
+  sgMail.setApiKey(getConf().SendGridKey);
   const msg = {
     from: "jason.t.stillerman@gmail.com",
     to: recipients,

@@ -1,21 +1,37 @@
 import * as React from "react";
 import { GoogleLogin } from "react-google-login";
-
-// @ts-ignore
-import conf from "../conf.yaml";
+import axios from "axios";
 
 export default ({ onAuth }) => {
+  const [clientId, setClientId] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+
+  async function fetchClientId() {
+    setLoading(true);
+    const resp = await axios.get("/oauthClientId");
+    console.log(resp);
+    setClientId(resp.data);
+    setLoading(false);
+  }
+
+  React.useEffect(() => {
+    fetchClientId();
+  }, []);
   return (
     <div>
       <h1>Login with Google</h1>
-      <GoogleLogin
-        clientId={conf.OAuthClientId}
-        buttonText="Login"
-        onSuccess={(results) => onAuth(results["tokenId"])}
-        onFailure={console.log}
-        cookiePolicy={"single_host_origin"}
-        isSignedIn={true}
-      ></GoogleLogin>
+      {loading ? (
+        <p>Loading</p>
+      ) : (
+        <GoogleLogin
+          clientId={clientId}
+          buttonText="Login"
+          onSuccess={(results) => onAuth(results["tokenId"])}
+          onFailure={console.log}
+          cookiePolicy={"single_host_origin"}
+          isSignedIn={true}
+        ></GoogleLogin>
+      )}
     </div>
   );
 };

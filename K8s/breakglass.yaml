@@ -14,10 +14,13 @@ spec:
     spec:
       containers:
         - name: breakglass
-          image: jstillerman/breakglass:v5
+          image: jstillerman/breakglass:v6
           ports:
             - containerPort: 8080
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: breakglass-configmap
 ---
 apiVersion: v1
 kind: Service
@@ -27,6 +30,6 @@ spec:
   selector:
     app: breakglass
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 8080
   type: LoadBalancer

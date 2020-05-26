@@ -106,9 +106,13 @@ function getTempBinding(
 }
 
 export async function signIntoServiceAccount(account: string, keyFile: string) {
+  fs.writeFileSync("./key.json", keyFile);
+
   await cmd(
-    `gcloud auth activate-service-account ${account} --key-file=${keyFile}`
+    `gcloud auth activate-service-account ${account} --key-file=key.json`
   );
+
+  console.log("SIGNED INTO SERVICE ACCOUNT");
 }
 
 export async function cleanEnv() {

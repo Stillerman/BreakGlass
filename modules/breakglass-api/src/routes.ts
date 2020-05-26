@@ -3,8 +3,7 @@ import bodyParser from "body-parser";
 import { validateUser } from "./auth";
 import { canUserParticipate } from "./permissions";
 
-//@ts-ignore
-import conf from "../conf.yaml";
+import { getConf } from "./getConf";
 
 import { getProjects, grantRole, toProject } from "../../breakglass-core";
 
@@ -23,11 +22,17 @@ router.get("/getProjects", validateUser, async (req, res) => {
 router.get("/getRoles/:project", validateUser, async (req, res) => {
   console.log("Getting permissions for", req.params.project);
   let permissions = [];
-  if (conf?.global?.permissions) {
-    permissions = [...permissions, ...conf.global.permissions];
+  if (getConf()?.global?.permissions) {
+    permissions = [...permissions, ...getConf().global.permissions];
   }
-  if (conf[req.params.project] && conf[req.params.project].permissions) {
-    permissions = [...permissions, ...conf[req.params.project].permissions];
+  if (
+    getConf()[req.params.project] &&
+    getConf()[req.params.project].permissions
+  ) {
+    permissions = [
+      ...permissions,
+      ...getConf()[req.params.project].permissions,
+    ];
   }
   res.json(permissions);
 });
@@ -55,6 +60,10 @@ router.post("/grantRole", validateUser, bodyParser.json(), async (req, res) => {
   await notify(roleReq);
 
   return res.status(200).json(req.body);
+});
+
+router.get("/oauthClientId", (req, res) => {
+  res.json(getConf().OAuthClientId);
 });
 
 export default router;
