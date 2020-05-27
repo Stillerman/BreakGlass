@@ -53,59 +53,64 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
        --iam-account {The service account you created above}
    ```
 
-   Enable the Cloud Resource Manager API [Here](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com)
-   **Note** be sure that this is for the project Breakglass!
-
    Sign in by running the following
 
    ```
    gcloud auth activate-service-account {service account} --key-file=key.json
    ```
 
-   Run
+4. Grant Permissions
+
+   Enable the Cloud Resource Manager API [Here](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com)
+   **Note** be sure that this is for the project Breakglass!
+
+   Next, grant sa-breakglass folder admin in all of the folders that you would like users to have the change to escalate in. Breakglass will only be able to see and update projects where it is the folder admin.
+
+   After permissions are configured, run
 
    ```
    gcloud projects list
    ```
 
-   and make sure you can see the projects
-
-4. Grant Permissions
-
-   Grant sa-breakglass folder admin in all of the folders that you would like users to have the change to escalate in. Breakglass will only be able to see and update projects where it is the folder admin.
+   and make sure you can see the projects you want breakglass to have access to. **Note** It might take 3-5 minutes for the permissions to update and the projects to be visible.
 
 5. Add OAuth to breakglass project
 
-   Go [here](https://developers.google.com/identity/sign-in/web/sign-in#before_you_begin) and click "Configure a project"
+   Go to the cloud console, select the breakglass project and then navigate to APIs & Services -> Credentials. Click "Create Credentials" -> Oauth Client ID -> Configure Consent Screen -> Internal then provide a display name (probably breakglass) -> Save
 
-   Select BreakGlass and when it asks "Where are you calling from?" Select "Web Browser". Follow prompts until you get the OAuth Client Id. That will be needed for later.
+   Now go back to credentials -> Create Credentials -> OAuth Client Id -> Application type: Web Application
+
+   Here, you name the key (name doesn't matter) and you also add "Authorized JavaScript Origins". Add just "http://localhost:8080" for now, we will come back to this later.
+
+   Click create and copy the client ID for later. You won't be needed the secret.
 
 6. Configure Breakglass
 
-   Rename `conf.yaml.example` to `conf.yaml` and configure it to your needs. Read about possible configurations [here](./CONFIGURE.md).
+   Copy `K8s/breakglass-configmap.yaml.example` to `K8s/breakglass-configmap.yaml` and configure it to your needs. Read about possible configurations [here](./CONFIGURE.md).
 
-   In the root of the project create `.secrets` file.The file should be in the root folder (the one with `Dockerfile` in it) and should be in the following format
-
-   ```
-   ServiceAccount=breakglass-sa@XXX
-   KeyFile=key.json
-   ```
+   **Note** you will need the OAuth Client Id from the previous step.
 
 7. Build the project
 
-   To run the project with docker, run
-
-   ```
-   yarn docker
-   docker run jstillerman/breakglass:v1 -p 8080:8080
-   ```
-
-   to run with Kubernetes run
+   Build the docker image in the minikube context with
 
    ```
    yarn k8s
    ```
 
-   **Note** you will need to whlelist the ip that the project is running on before OAuth will work. Add the ip address and port (ie `http://localhost:8080`) to the OAuth credentials allowed domains whitelist
+   Configure Kubernetes Project with
+
+   ```
+   minkube start
+   kubectl apply -f K8s
+   ```
+
+   Now the project will be running, but you have not whitelisted the port on the OAuth, so it will not work as is. Ensure everything is working properly by forwarding the port to the pod
+
+   ```
+   kubectl port-forward {Naem od pod that was created} 8080:8080
+   ```
+
+   Now navigate to `http://localhost:8080`
 
 8. Done.

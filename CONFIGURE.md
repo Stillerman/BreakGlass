@@ -1,6 +1,6 @@
 # How to configure breakglass
 
-The config for Breakglass lives in the `conf.yaml` file in the root of the project. Take a look at `conf.yaml.example` for an example configuration.
+The config for Breakglass lives in a Kubernetes configmap in the file `K8s/breakglass-configmap.yaml` file. Take a look at `K8s/breakglass-configmap.yaml.example` for an example configuration. Al the breakglass settings are in `data > config`
 
 ## OAuth Key
 
@@ -10,7 +10,7 @@ Breakglass needs google OAuth to be configured to work, so be sure to include
 OAuthClientId: 1234567890-XYZWVUTSRQP...
 ```
 
-In the top level of the `conf.yaml`
+In `data > config > OAuthClientID: 123...`
 
 ## Global Settings
 
