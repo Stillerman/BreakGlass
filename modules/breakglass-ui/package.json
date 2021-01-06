@@ -9,7 +9,7 @@
     "build": "node_modules/.bin/parcel build src/index.html"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bulma": "^0.8.2",
     "jwt-decode": "^2.2.0",
     "parcel": "^1.12.4",
