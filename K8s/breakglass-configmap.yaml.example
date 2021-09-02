@@ -37,9 +37,3 @@ data:
         emails:
           - jtstille@uvm.edu
 
-    SendGridKey: SG.ABCXYZ
-    OAuthClientId: XXXXXXXXX.apps.googleusercontent.com
-    ServiceAccountKey: {
-        "type": "service_account",
-        ... Rest of JSON copied from key.json
-      }

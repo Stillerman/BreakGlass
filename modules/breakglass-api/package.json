@@ -15,7 +15,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "parcel": "^1.12.4",
+    "parcel": "1.12.3",
     "yaml": "^1.10.0"
   },
   "devDependencies": {

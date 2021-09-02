@@ -1,16 +1,27 @@
 # How to configure breakglass
 
-The config for Breakglass lives in a Kubernetes configmap in the file `K8s/breakglass-configmap.yaml` file. Take a look at `K8s/breakglass-configmap.yaml.example` for an example configuration. Al the breakglass settings are in `data > config`
+Breakglass is configured using a `Configmap` and a K8s `Secret`.
+
+The config for Breakglass lives in a Kubernetes configmap in the file `K8s/breakglass-configmap.yaml` file. Take a look at `K8s/breakglass-configmap.yaml.example` for an example configuration. All the breakglass settings are in `data > config`
+
+The secrets for Breakglass lives in a Kubernetes Secret in the file `K8s/breakglass-secret.yaml` file. Take a look at `K8s/breakglass-secret.yaml.example` for an example configuration.
+
+## GCP Service Account
+
+Breakglass needs access to the GCP Api using a service account that has the ability to manage permissions.
+
+```yaml
+GCP_CREDENTIALS: # encode using base64
+```
+
 
 ## OAuth Key
 
 Breakglass needs google OAuth to be configured to work, so be sure to include
 
 ```yaml
-OAuthClientId: 1234567890-XYZWVUTSRQP...
+OAUTH_CLIENT_ID: # encode using base64
 ```
-
-In `data > config > OAuthClientID: 123...`
 
 ## Global Settings
 
@@ -77,10 +88,10 @@ sql-server-1337:
       - https://DATABASE-MANAGERS-CHATROOM-HOOK/qwerty
 ```
 
-If you want to have email notifications you must get a [SendGrid API Key](https://signup.sendgrid.com/). You can get 100 emails a day for free. Include the key on the top level of the config as follows
+If you want to have email notifications you must get a [SendGrid API Key](https://signup.sendgrid.com/). You can get 100 emails a day for free. Include the key in the K8s Secret.
 
 ```yaml
-SendGridKey: SG.XYZABC...
+SENDGRID_KEY: # encode using base64
 ```
 
 `chatrooms` is a list of webhooks that point at specific Google Chat Spaces. Read about webhooks [here](https://developers.google.com/hangouts/chat/how-tos/webhooks).
