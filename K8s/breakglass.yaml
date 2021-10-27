@@ -21,6 +21,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: breakglass-configmap
+            - secretRef:
+                name: breakglass
 ---
 apiVersion: v1
 kind: Service

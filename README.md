@@ -108,7 +108,7 @@ BreakGlass is a tool that allows developers to temporarily escalate their own GC
    Now the project will be running, but you have not whitelisted the port on the OAuth, so it will not work as is. Ensure everything is working properly by forwarding the port to the pod
 
    ```
-   kubectl port-forward {Naem od pod that was created} 8080:8080
+   kubectl port-forward {Naem of pod that was created} 8080:8080
    ```
 
    Now navigate to `http://localhost:8080`
